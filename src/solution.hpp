@@ -3,39 +3,26 @@
 
 #include <vector>
 
+/**
+ * @brief Clase que implementa algoritmos de búsqueda.
+ * Sigue los principios de ADT: separa la interfaz de la implementación.
+ */
 class Solution {
 public:
-    // Solución Óptima: Búsqueda Binaria O(log n)
-    int searchBinary(const std::vector<int>& nums, int target) {
-        int left = 0;
-        int right = nums.size() - 1;
+    /**
+     * @brief Solución Óptima: Búsqueda Binaria.
+     * Complejidad Temporal: O(log n)
+     * Complejidad Espacial: O(1)
+     * Precondición: El vector 'nums' debe estar ordenado.
+     */
+    int searchBinary(const std::vector<int>& nums, int target);
 
-        while (left <= right) {
-            // Evita el desbordamiento (overflow) de memoria
-            int mid = left + (right - left) / 2;
-
-            if (nums[mid] == target) {
-                return mid; // Caso base: lo encontramos
-            } 
-            else if (nums[mid] < target) {
-                left = mid + 1; // Descartamos la mitad izquierda
-            } 
-            else {
-                right = mid - 1; // Descartamos la mitad derecha
-            }
-        }
-        return -1; // No se encontró
-    }
-
-    // Solución Ingenua: Búsqueda Lineal O(n)
-    int searchLinear(const std::vector<int>& nums, int target) {
-        for (int i = 0; i < nums.size(); ++i) {
-            if (nums[i] == target) {
-                return i;
-            }
-        }
-        return -1;
-    }
+    /**
+     * @brief Solución Ingenua: Búsqueda Lineal.
+     * Complejidad Temporal: O(n)
+     * Complejidad Espacial: O(1)
+     */
+    int searchLinear(const std::vector<int>& nums, int target);
 };
 
-#endif // SOLUTION_HPP
+#endif

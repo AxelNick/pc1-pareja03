@@ -4,7 +4,7 @@
 
 **Integrantes:**
 * Axel Alberto Reyes Baldeon 
-* [Nombres y Apellidos de tu compañero]
+* Andre Dylan Chumbimuni Ricci
 
 **Problema Asignado:** [704. Binary Search](https://leetcode.com/problems/binary-search/)
 
