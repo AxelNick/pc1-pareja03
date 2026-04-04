@@ -2,30 +2,41 @@
 #include <vector>
 #include <chrono>
 
+// Función auxiliar para medir el tiempo de inserción
+double measureInsertionTime(int n, bool useReserve) {
+    auto start = std::chrono::high_resolution_clock::now();
+
+    std::vector<int> nums;
+    
+    // Si la bandera es verdadera, pre-asignamos la memoria
+    if (useReserve) {
+        nums.reserve(n);
+    }
+
+    // Llenamos el vector
+    for (int i = 0; i < n; i++) {
+        nums.push_back(i);
+    }
+
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double, std::milli> duration = end - start;
+
+    return duration.count();
+}
+
 int main() {
-    const int SIZE = 10000000; // 10 millones de elementos
+    const int N = 10000000; // 10 millones de elementos
 
-    // Experimento A: push_back ingenuo (sin reserve)
-    auto startA = std::chrono::high_resolution_clock::now();
-    std::vector<int> vecA;
-    for (int i = 0; i < SIZE; ++i) {
-        vecA.push_back(i);
-    }
-    auto endA = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double, std::milli> timeA = endA - startA;
+    std::cout << "--- Benchmark: push_back vs reserve ---\n";
+    std::cout << "Elementos a insertar: " << N << "\n\n";
 
-    // Experimento B: push_back optimizado (con reserve)
-    auto startB = std::chrono::high_resolution_clock::now();
-    std::vector<int> vecB;
-    vecB.reserve(SIZE); // Pre-asignamos la memoria
-    for (int i = 0; i < SIZE; ++i) {
-        vecB.push_back(i);
-    }
-    auto endB = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double, std::milli> timeB = endB - startB;
+    // Ejecutamos ambas pruebas
+    double timeWithout = measureInsertionTime(N, false);
+    double timeWith = measureInsertionTime(N, true);
 
-    std::cout << "Tiempo SIN reserve: " << timeA.count() << " ms\n";
-    std::cout << "Tiempo CON reserve: " << timeB.count() << " ms\n";
+    // Mostramos los resultados
+    std::cout << "> Tiempo normal (sin reserve): " << timeWithout << " ms\n";
+    std::cout << "> Tiempo optimizado (con reserve): " << timeWith << " ms\n";
 
     return 0;
 }
