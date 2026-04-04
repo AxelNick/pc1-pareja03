@@ -3,26 +3,18 @@
 
 #include <vector>
 
-/**
- * @brief Clase que implementa algoritmos de búsqueda.
- * Sigue los principios de ADT: separa la interfaz de la implementación.
- */
+//La clase que implementa algoritmos de búsqueda.
+//Separa la interfaz de la implementación (ADT).
+
 class Solution {
 public:
-    /**
-     * @brief Solución Óptima: Búsqueda Binaria.
-     * Complejidad Temporal: O(log n)
-     * Complejidad Espacial: O(1)
-     * Precondición: El vector 'nums' debe estar ordenado.
-     */
-    int searchBinary(const std::vector<int>& nums, int target);
+   //Solución Óptima: Búsqueda Binaria,condicionado por ser ordenado, complejidad temporal: O(log n)
+  
+    int searchBinary(const std::vector<int>& nums, int target) const;
 
-    /**
-     * @brief Solución Ingenua: Búsqueda Lineal.
-     * Complejidad Temporal: O(n)
-     * Complejidad Espacial: O(1)
-     */
-    int searchLinear(const std::vector<int>& nums, int target);
+    //Solución Ingenua: Búsqueda Lineal, complejidad temporal: O(n) 
+   
+    int searchLinear(const std::vector<int>& nums, int target) const;
 };
 
 #endif
