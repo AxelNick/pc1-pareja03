@@ -1,13 +1,12 @@
 # Reporte de Profiling y Benchmark
 
-## 1. Benchmark: Microoptimización vs Algoritmo / STL
-Para demostrar cómo la comprensión de las estructuras de datos impacta el rendimiento, realizamos un microexperimento aislando la construcción del arreglo de entrada usando `std::chrono`. Comparamos un llenado ingenuo vs uno pre-asignado.
+Para nuestro bloque experimental, quisimos demostrar que entender la estructura de datos sirve mucho más que solo ponerle una bandera de optimización al compilador.
 
-**Resultados del Benchmark (Llenando 10 millones de elementos):**
-* Tiempo usando `push_back` ingenuo: **~20.69 ms** (promedio)
-* Tiempo usando `push_back` con `reserve()`: **~9.96 ms** (promedio)
+Hicimos un benchmark midiendo cuánto tarda la computadora en insertar 10 millones de números a un `std::vector`.
+* Tiempo insertando datos a ciegas (solo `push_back`): **~17.40 ms**
+* Tiempo avisándole al vector cuánta memoria iba a necesitar (`reserve`): **~7.06 ms**
 
-**Conclusión:** Evitar que el `std::vector` reasigne dinámicamente su memoria bajo el capó redujo el tiempo de ejecución a la mitad. Esto demuestra que utilizar correctamente las herramientas de la librería estándar (STL) y entender la complejidad espacial tiene un impacto inmensamente superior a simplemente cambiar una bandera de compilación.
+**Conclusión:** Solo por entender cómo el vector maneja la memoria internamente y usar `reserve()`, bajamos el tiempo a menos de la mitad. El código bien pensado le gana a la fuerza bruta.
 
-## 2. Profiling (gprof)
-Al ejecutar el código con la bandera espía `-pg`, el análisis confirmó nuestra teoría de complejidad. Debido a que la Búsqueda Binaria tiene una complejidad logarítmica O(log n), su tiempo de ejecución es de apenas nanosegundos. El 99% del esfuerzo del procesador se concentró exclusivamente en construir el arreglo inicial (O(n)), no en buscar el elemento.
+**Resultados de Profiling (gprof):**
+Cuando analizamos el programa con la herramienta `gprof`, comprobamos exactamente lo que vimos en la teoría de clases. Como la Búsqueda Binaria tiene una complejidad de $O(\log n)$, la computadora la resuelve tan rápido que en el reporte de tiempo sale prácticamente 0.00 segundos. Todo el tiempo real del procesador se gasta en inicializar el arreglo de prueba, que es una tarea $O(n)$.

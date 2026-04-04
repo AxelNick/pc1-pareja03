@@ -1,12 +1,11 @@
-# Reporte de Optimización y Sanitizers
+# Reporte de Optimizaciones y Sanitizers
 
-## 1. Análisis de Builds
-Se compilaron diferentes versiones del código para observar el impacto de las banderas de optimización de `g++`. Los tamaños de los archivos ejecutables obtenidos fueron:
+En esta parte del laboratorio, probamos compilar nuestro código con distintas banderas de `g++` para ver cómo afectaban el peso final del ejecutable. Estos fueron los resultados:
 
-* **Build de Depuración (-O0):** 151 KB (154,911 bytes). Es el más pesado, conservando todos los símbolos para facilitar el uso de un debugger.
-* **Build Compacto (-Os):** 140 KB (143,552 bytes). Redujo el peso en 11 KB, optimizando el espacio en disco.
-* **Build Release (-O2):** 137 KB (140,889 bytes). Al aplicar optimizaciones agresivas y eliminación de código no utilizado (dead code elimination), resultó siendo el binario más ligero y rápido.
+* **Sin optimizar (-O0):** El archivo pesó **151 KB**. Como era de esperarse, es el más pesado porque el compilador deja todo el código intacto para que podamos usar un debugger sin problemas.
+* **Optimizado para tamaño (-Os):** Bajó a **140 KB**. Cumplió su función de ahorrar espacio en el disco.
+* **Modo Release (-O2):** Quedó en **137 KB**. Nos pareció muy interesante que la bandera enfocada en velocidad terminara haciendo el archivo más ligero de todos. Esto pasa porque el compilador recorta todo el código que no se usa.
 
-## 2. Sanitizers
-Al intentar ejecutar la bandera `-fsanitize=address,undefined`, identificamos una limitación de nuestro entorno de desarrollo (Windows con MSYS2/UCRT64), ya que el enlazador no incluye la librería `libasan` por defecto. 
-Sin embargo, teóricamente, si nuestro algoritmo tuviera un error (como usar `(left + right) / 2` causando un desbordamiento, o intentar acceder a `nums[nums.size()]`), esta herramienta nos habría alertado con un error crítico de tipo *heap-buffer-overflow*. Nuestro código, al manejar correctamente los límites e invariantes, es seguro en memoria.
+**Sobre el uso de Sanitizers:**
+Quisimos usar el AddressSanitizer (`-fsanitize=address,undefined`) para buscar errores de memoria, pero tuvimos un problema técnico: al usar Windows con el entorno MSYS2/UCRT64, el compilador no trae la librería `libasan` por defecto, así que nos dio un error de enlazado (linker). 
+Aun así, estamos seguros de que nuestro código es seguro en memoria porque evitamos el clásico error de desbordamiento (overflow) calculando el punto medio como `left + (right - left) / 2`, y tenemos cuidado con los límites del arreglo.
