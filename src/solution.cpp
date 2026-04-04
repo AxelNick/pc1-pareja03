@@ -1,7 +1,7 @@
 #include "solution.hpp"
 
 // Implementación de la Búsqueda Binaria
-int Solution::searchBinary(const std::vector<int>& nums, int target) {
+int Solution::searchBinary(const std::vector<int>& nums, int target) const{
     int left = 0;
     int right = static_cast<int>(nums.size()) - 1;
 
@@ -23,7 +23,7 @@ int Solution::searchBinary(const std::vector<int>& nums, int target) {
 }
 
 // Implementación de la Búsqueda Lineal (ingenua)
-int Solution::searchLinear(const std::vector<int>& nums, int target) {
+int Solution::searchLinear(const std::vector<int>& nums, int target) const{
     for (int i = 0; i < static_cast<int>(nums.size()); ++i) {
         if (nums[i] == target) {
             return i;
