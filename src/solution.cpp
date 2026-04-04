@@ -22,7 +22,7 @@ int Solution::searchBinary(const std::vector<int>& nums, int target) {
     return -1; 
 }
 
-// Implementación de la Búsqueda Lineal (Alternativa ingenua)
+// Implementación de la Búsqueda Lineal (ingenua)
 int Solution::searchLinear(const std::vector<int>& nums, int target) {
     for (int i = 0; i < static_cast<int>(nums.size()); ++i) {
         if (nums[i] == target) {
