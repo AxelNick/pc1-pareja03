@@ -24,4 +24,4 @@ add_executable(run_bench
 )
 
 # 3. Registrar el test para ejecutar el benchmark
-add_test(NAME PruebasAlgoritmos COMMAND run_tests)
+add_test(NAME Rendimiento COMMAND run_bench)
