@@ -67,8 +67,8 @@ ctest -V
 
 ### Microoptimización vs Algoritmo
 Se comparó el impacto de una estructura de datos eficiente (`vector::reserve`) frente a la inserción ingenua:
-* **Sin reserve:** 21.11 ms (promedio)
-* **Con reserve:** 10.23 ms (promedio)
+* **Sin reserve:** 73.31 ms (promedio)
+* **Con reserve:** 59.89 ms (promedio)
 * **Conclusión:** La elección correcta de herramientas de la STL (`reserve`) tuvo un impacto del 50% de mejora, superando el beneficio de cualquier bandera de compilación.
 ---
 
