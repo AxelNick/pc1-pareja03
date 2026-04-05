@@ -3,7 +3,7 @@
 #include <cassert>
 #include "solution.hpp"
 
-void test_de_busqueda_binario_basico() {
+void test_de_busqueda_binaria_basico() {
     Solution sol;
     // 1. Caso Normal (Arrange)
 
@@ -13,12 +13,12 @@ void test_de_busqueda_binario_basico() {
     assert(sol.searchBinary(nums1, target1) == 4);
     std::cout << "[PASO] Caso normal: Elemento encontrado en el medio." << std::endl;
 }
-void test_de_busqueda_binario_no_encontrado() {
+void test_de_busqueda_binaria_no_encontrada() {
     Solution sol;
-    // 2. Caso Normal: No existe
+    // 2. Casos de No Existencia y Límites Externos
 
     std::vector<int> nums1 = {-1, 0, 3, 5, 9, 12};
-    //caso 1: target menor que el primer elemento
+    //caso 1: target no existe en el arreglo
     int target2 = -2;
     assert(sol.searchBinary(nums1, target2) == -1);
     //caso 2: target mayor que el último elemento
@@ -30,7 +30,7 @@ void test_de_busqueda_binario_no_encontrado() {
     std::cout << "[PASO] Casos de no existencia y limites externos." << std::endl;
 
 }
-void test_de_busqueda_binario_caso_limite() {
+void test_de_busqueda_binaria_caso_limite() {
     Solution sol;
     // 3. Caso Borde: Arreglo de 1 solo elemento
 
@@ -47,10 +47,10 @@ void test_de_busqueda_binario_caso_limite() {
 int main() {
     std::cout << "Iniciando Pruebas Unitarias" << std::endl;
     
-    test_de_busqueda_binario_basico();
-    test_de_busqueda_binario_no_encontrado();
-    test_de_busqueda_binario_caso_limite();
+    test_de_busqueda_binaria_basico();
+    test_de_busqueda_binaria_no_encontrada();
+    test_de_busqueda_binaria_caso_limite();
 
-    std::cout << "Todos los tests pasaron con exito" << std::endl;
+    std::cout << "Todos los tests pasaron scon exito" << std::endl;
     return 0;
 }
