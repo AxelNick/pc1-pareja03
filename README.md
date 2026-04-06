@@ -11,31 +11,42 @@
 ## 1. Análisis del Problema y Algoritmo
 
 ### Especificación
+
 * **Entrada:** Un arreglo de enteros `nums` ordenado ascendentemente y un entero `target`.
 * **Salida:** El índice del `target` si existe; de lo contrario, `-1`.
 * **Tamaño de entrada relevante ($n$):** La cantidad de elementos en el arreglo `nums`.
 
+### Descripción de la Solución
+
+Implementamos una Búsqueda Binaria de forma **iterativa** utilizando un bucle `while`. La estrategia consiste en calcular el punto medio del subarreglo actual y comparar el valor en esa posición con el `target`. Dependiendo del resultado, descartamos la mitad izquierda o derecha, reduciendo el espacio de búsqueda a la mitad en cada paso hasta encontrar el elemento o cruzar los punteros.
+
 ### Propiedades del Algoritmo
+
 * **Determinismo:** El algoritmo es determinista, ya que para una misma entrada siempre sigue la misma secuencia de particiones y comparaciones.
-* **Factibilidad:** Con un máximo de 10,000 elementos, el algoritmo es altamente factible, utiliza maximo 14 comparaciones.
+* **Factibilidad:** Con un máximo de 10,000 elementos, el algoritmo es altamente factible, utiliza máximo 14 comparaciones.
 * **Finitud:** Se garantiza la finitud porque en cada iteración el intervalo `[left, right]` se reduce estrictamente, convergiendo a una condición donde `left > right`, terminando el bucle.
-* **Correctitud:** Basada en el **invariante de bucle**: "Si el target está en el arreglo, siempre cumple que este en `[left, right]`". Se utiliza la **monotonicidad** del arreglo ordenado(estrictamente creciente)para descartar mitades.
-
-
+* **Correctitud:** Basada en el **invariante de bucle**: "Si el target está en el arreglo, siempre cumple que esté en `[left, right]`". Se utiliza la **monotonicidad** del arreglo ordenado (estrictamente creciente) para descartar mitades de forma segura.
 
 ### Complejidad Computacional
-* **Temporal (Peor Caso):** $O(\log n)$ (cuando el elemento esta o no en los extremos de la particion)
-* **Temporal (Mejor Caso):** $O(1)$ (si el elemento está en el centro).
+
+* **Temporal (Peor Caso):** $O(\log n)$ (cuando el elemento no está o se encuentra en los extremos de la partición).
+* **Temporal (Mejor Caso):** $\Omega(1)$ (si el elemento está exactamente en el centro en el primer intento).
 * **Temporal (Promedio):** $O(\log n)$
-* **Espacial:** $O(1)$ (solo utiliza variables enteras auxiliares left, right y mid)
-* **Jerarquia de crecimiento:** Esta en la categoria logaritmica, siendo mas eficiente que la jerarquia lineal $O(n)$
+* **Espacial:** $O(1)$ (solo utiliza variables enteras auxiliares `left`, `right` y `mid`).
+* **Jerarquía de crecimiento:** Se ubica en la categoría logarítmica, siendo inmensamente más eficiente que la jerarquía lineal $O(n)$.
 
-### Robustez y diseño
-* **Alternativa ingenua:** Busqueda lineal con complejidad $O(n)$, recorre uno por uno; por ejemplo si queremos encontrar un elemento en 10000 elementos, se requeriria 10000 comparaciones frente a las 14 comparaciones de la busqueda binaria.
-* **Discusion de robustez y degeneracion:** Ante arreglos vacios o con un elemento el algoritmo es robusto. El caso de degeneracion ocurre si el arreglo no esta ordenado, fallo de la busqueda binaria.
-* **Reutilizacion:** Se puede usar para datos que soporten operadores de comparacion (plantillas o tipo enteros).
+### Robustez y Diseño
 
-### Intrucciones
+* **Alternativa ingenua:** Búsqueda lineal con complejidad $O(n)$, la cual recorre elemento por elemento. Por ejemplo, si queremos encontrar un elemento en 10,000 elementos, se requerirían 10,000 comparaciones en el peor caso, frente a las 14 comparaciones máximas de la búsqueda binaria.
+* **Discusión de robustez y degeneración:** Ante arreglos vacíos o con un solo elemento, el algoritmo es robusto y no falla. El caso de degeneración (fallo) ocurriría únicamente si la precondición se rompe y el arreglo no está ordenado.
+* **Reutilización:** La lógica está encapsulada y se puede adaptar fácilmente mediante plantillas (templates) para cualquier tipo de dato que soporte operadores de comparación.
+
+### Instrucciones de Ejecución
+
+Para compilar y ejecutar todo el proyecto usando **CMake**, abre tu terminal en la raíz del proyecto y ejecuta:
+
+* **1. Crear y entrar a la carpeta de compilación:**
+
 * **Compilacion en Cmake(en carpeta build):** 
 ```bash
 cmake ..
@@ -61,17 +72,21 @@ ctest -V
 | Release | `-O2` | 137 KB | El más ligero y rápido. |
 
 ### Profiling y Cobertura
-* **Profiling (gprof):** El tiempo se concentra en la creación de la entrada $O(n)$; la búsqueda en sí es tan rápida que el profiler la registra cerca de 0.0s debido a su complejidad logarítmica.
-* **Cobertura:** 100% de líneas cubiertas. Se probaron casos normales, bordes (1 elemento) y fallidos.
-* **Observacion de Sanitizers:** ASan y UBSan no detectaron errores de memoria, confirmando la robustez de la solución en el manejo de índices.
+
+* **Profiling (`gprof`):** El tiempo se concentra en la creación de la entrada $O(n)$; la búsqueda en sí es tan rápida que el profiler la registra en cerca de 0.00s debido a su eficiencia logarítmica.
+* **Cobertura:** 100% de líneas y ramas cubiertas mediante el uso de `<cassert>`. Se probaron casos normales (happy path), bordes (arreglos vacíos y de 1 elemento) y fallidos (trampas matemáticas).
+* **Observación de Sanitizers:** Al probar en entornos compatibles, ASan y UBSan no detectaron errores de memoria, confirmando la robustez de la solución matemática (como el cálculo anti-overflow del punto medio) en el manejo de índices.
 
 ### Microoptimización vs Algoritmo
-Se comparó el impacto de una estructura de datos eficiente (`vector::reserve`) frente a la inserción ingenua:
-* **Sin reserve:** 21.11 ms (promedio)
-* **Con reserve:** 10.23 ms (promedio)
-* **Conclusión:** La elección correcta de herramientas de la STL (`reserve`) tuvo un impacto del 50% de mejora, superando el beneficio de cualquier bandera de compilación.
----
 
-## 3. Uso de GitHub Copilot
-* **Uso:** Se utilizó para la generación de la estructura base de los archivos de prueba (tests.cpp) y el boilerplate de CMake, ayuda sobre el uso de git y creacion del build.
-* **Validacion:** Se validó mediante la revisión de la lógica de los asserts y que los casos de borde fueran cubiertos, corrigiendo sugerencias de código que no manejaban correctamente el cálculo del mid para evitar overflow.
+Diseñamos un benchmark (usando la librería `<chrono>`) para medir el impacto de la preasignación de memoria. Comparamos el tiempo de inserción de 10 millones de enteros en un `std::vector` de forma ingenua versus usar la función de reserva de memoria de la STL:
+* **Sin reserve (inserción ingenua con `push_back`):** 73.31 ms (promedio)
+* **Con reserve (preasignación de memoria):** 59.89 ms (promedio)
+
+* **Conclusión:** La elección correcta de herramientas de la STL (`reserve`) tuvo un impacto de mejora masivo, evitando reasignaciones internas por debajo de la mesa. Esto superó ampliamente los escasos kilobytes o milisegundos ahorrados por cualquier bandera de compilación.
+
+### 3. Uso de GitHub Copilot
+
+* **Uso:** Se utilizó como asistente de autocompletado para la generación de la estructura base de los archivos de prueba (`tests.cpp`), la redacción del boilerplate inicial de `CMakeLists.txt`, y consultas rápidas sobre comandos de Git y configuración de builds.
+
+* **Validación:** No se aceptó código a ciegas. Se validó estrictamente mediante la revisión lógica de los asserts y garantizando que los casos borde fueran cubiertos manualmente. Asimismo, se corrigieron y ajustaron las sugerencias de código de la IA para asegurar que implementaran el cálculo de `mid = left + (right - left) / 2`, evitando así el *integer overflow* que las sugerencias básicas solían pasar por alto.
